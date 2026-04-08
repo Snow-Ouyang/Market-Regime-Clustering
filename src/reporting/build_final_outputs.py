@@ -101,7 +101,7 @@ def plot_final_profile_heatmap(summary: pd.DataFrame) -> None:
     plt.xlabel("")
     plt.ylabel("")
     plt.tight_layout()
-    plt.savefig(FINAL_FIGURES / "final_model_profile_heatmap.png", dpi=180)
+    plt.savefig(FINAL_FIGURES / "final_model_profile_heatmap_p10.png", dpi=180)
     plt.close()
 
 
@@ -113,8 +113,8 @@ def build_outputs() -> None:
         EXT_RESULTS / "stress_aware_4state_regime_panel.csv": FINAL_RESULTS / "regime_panel.csv",
         EXT_RESULTS / "stress_aware_4state_variable_moments.csv": FINAL_RESULTS / "state_moments.csv",
         EXT_RESULTS / "stress_aware_4state_asset_performance.csv": FINAL_RESULTS / "asset_performance_by_regime.csv",
-        EXT_RESULTS / "plots" / "stress_aware_4state_state_path.png": FINAL_FIGURES / "stress_aware_regime_path.png",
-        EXT_RESULTS / "plots" / "stress_aware_4state_asset_macro_events.png": FINAL_FIGURES / "stress_aware_assets_by_regime.png",
+        EXT_RESULTS / "plots" / "stress_aware_4state_state_path.png": FINAL_FIGURES / "stress_aware_regime_path_p10.png",
+        EXT_RESULTS / "plots" / "stress_aware_4state_asset_macro_events.png": FINAL_FIGURES / "stress_aware_assets_by_regime_p10.png",
     }
     for src, dst in final_files.items():
         copy(src, dst)

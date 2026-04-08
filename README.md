@@ -11,7 +11,7 @@ Can a compact macro-financial feature space identify interpretable market regime
 - **Variables:** `growth_pc1`, `inflation_pc1`, `gs10`, `term_spread_10y_1y`, `credit_spread`
 - **Why preferred:** it offers the best tradeoff between persistence and historical narrative alignment, and isolates a distinct stress regime that the compact baseline mixes into broader macro environments
 
-![Stress-aware regime path](figures/final_model/stress_aware_regime_path.png)
+![Stress-aware regime path](figures/final_model/stress_aware_regime_path_p10.png)
 
 The preferred model is not a recession classifier; it is a persistent macro-financial segmentation whose crisis-sensitive state aligns more closely with major stress episodes than the 3-state benchmark.
 
@@ -45,7 +45,7 @@ The preferred model is summarized in [results/final_model/regime_characteristics
 
 The key economic point is the fourth regime: **Macro-Financial Stress** is clearly differentiated by weak growth, the widest credit spreads, the highest volatility, weak equity outcomes, and the strongest bond behavior.
 
-![Preferred model profile heatmap](figures/final_model/final_model_profile_heatmap.png)
+![Preferred model profile heatmap](figures/final_model/final_model_profile_heatmap_p10.png)
 
 ## Historical Narrative Alignment
 
@@ -63,7 +63,7 @@ The main contribution is not just the addition of a fourth state, but the fact t
 
 The preferred regimes map cleanly into cross-asset behavior. The figure below keeps regime background shading and shows how equity, oil, bonds, and gold behave across the four-state classification.
 
-![Assets by preferred regime](figures/final_model/stress_aware_assets_by_regime.png)
+![Assets by preferred regime](figures/final_model/stress_aware_assets_by_regime_p10.png)
 
 Full asset results are stored in [results/final_model/asset_performance_by_regime.csv](results/final_model/asset_performance_by_regime.csv). A compact summary is below.
 
