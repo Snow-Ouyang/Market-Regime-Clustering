@@ -17,6 +17,14 @@ The preferred model is not a recession classifier; it is a persistent macro-fina
 
 The benchmark baseline remains useful for reference, but the stress-aware final model is preferred because it separates crisis-like macro-financial stress from broader macro environments.
 
+**Feature construction at a glance**
+
+- `growth_pc1`: first principal component of the monthly **Growth** block, built from `cfnai`, `gdp_amom`, `ipgr_amom`, and `ism`
+- `inflation_pc1`: first principal component of the monthly **Inflation** block, built from `cpi_amom`, `ppi_amom`, and `si_diff`
+- `gs10`: 10-year Treasury yield level
+- `term_spread_10y_1y`: `GS10 - GS1`
+- `credit_spread`: `BAA - AAA`
+
 ## Why This Is the Preferred Model
 
 The original 3-state compact baseline remains a useful benchmark because it is stable, parsimonious, and interpretable. But it is no longer the preferred model because its state space is too coarse to isolate crisis periods as a dedicated regime: major episodes such as 2008 and 2020 are absorbed into broader macro environments rather than separated into a stress state. The stress-aware extension adds `credit_spread` and allows a fourth state, which more naturally isolates a distinct stress-like regime and improves narrative alignment around the 1973-1975 oil-shock recession, the Volcker disinflation double-dip, the 1990-1991 credit-tightening recession, the Global Financial Crisis, and the COVID shock. The preferred penalty, `p = 1.0`, is not the most conservative setting; it is the setting that best balances persistence, crisis separation, and economic meaning.
