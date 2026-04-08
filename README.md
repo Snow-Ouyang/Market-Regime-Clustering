@@ -109,6 +109,12 @@ The time-stability exercise shows an asymmetric result: trimming the **start** o
 
 ![Time stability paths](figures/jump_model_time_stability_paths.png)
 
+### Variable Stability
+
+The baseline is also more stable than nearby expanded specifications. Adding `credit_spread` to the final four-variable state space makes the classification visibly less balanced and introduces a smaller, less stable extra state, which is why credit is kept as a validation variable rather than a core state input.
+
+![Variable stability paths](figures/jump_model_variable_stability_paths.png)
+
 ### State-Count Stability
 
 Holding the feature space and penalty fixed confirms that `3-state` remains the most balanced option between a too-coarse `2-state` solution and a more split `4-state` solution.
@@ -162,7 +168,7 @@ The full asset table is [`results/core/regime_interpretation/asset_performance_b
 - The classification is more sensitive at the sample end than at the sample start.
 - Results depend on monthly feature construction and on the reduced four-variable state space.
 - Asset mapping is descriptive regime conditioning, not a complete trading strategy.
-- The bond proxy (`VUSTX`) is downloaded via `yfinance`, so full byte-for-byte reproduction requires network access for that step.
+- The bond proxy (`VUSTX`) is now stored locally as a monthly CSV, but it is still an external market series rather than a macro panel input.
 
 ## Repository Structure
 
@@ -209,6 +215,7 @@ python src/reporting/run_regime_interpretation.py
 Included in the repository:
 
 - raw macro and asset CSVs used in the study
+- a local monthly `VUSTX` bond series for asset mapping
 - processed panel files
 - final core result tables
 - README-ready figures

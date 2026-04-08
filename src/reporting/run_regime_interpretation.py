@@ -34,6 +34,7 @@ PLOTS_DIR = RESULTS_DIR / "plots"
 MAIN_PANEL_PATH = ROOT / "results" / "core" / "jump_model_penalty_grid" / "jump_model_penalty_grid_panel.csv"
 FINAL_MACRO_PATH = ROOT / "data_processed" / "final_macro_panel.csv"
 ASSETS_DIR = ROOT / "data_raw" / "assets"
+BOND_LOCAL_PATH = ASSETS_DIR / "VUSTX_monthly.csv"
 TARGET_PENALTY = 0.6
 MAIN_FEATURES = ["growth_pc1", "inflation_pc1", "gs10", "term_spread_10y_1y"]
 EXTERNAL_VARS = ["credit_spread", "ur_diff", "bog_amom", "cp_amom", "hs_amom", "realized_vol"]
@@ -178,7 +179,10 @@ def load_assets(regime_panel: pd.DataFrame) -> pd.DataFrame:
     spx = monthly_from_daily_price(ASSETS_DIR / "GSPC_yfinance_daily.csv", "date", "price").rename(columns={"price": "spx"})
     oil = monthly_from_series(ASSETS_DIR / "oil.csv", "observation_date", "WTISPLC").rename(columns={"price": "oil"})
     gold = monthly_from_series(ASSETS_DIR / "gold.csv", "date", "USD").rename(columns={"price": "gold"})
-    bond = download_bond_monthly(start).rename(columns={"price": "bond"})
+    if BOND_LOCAL_PATH.exists():
+        bond = monthly_from_series(BOND_LOCAL_PATH, "date", "price").rename(columns={"price": "bond"})
+    else:
+        bond = download_bond_monthly(start).rename(columns={"price": "bond"})
 
     panel = regime_panel[["date", "state"]].copy()
     for frame in [spx, oil, gold, bond]:
