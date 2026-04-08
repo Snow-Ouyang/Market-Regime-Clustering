@@ -81,7 +81,7 @@ The broader macro panel was not healthier than the compact one. Adding more vari
 
 ### Why not HMM
 
-The four-variable Gaussian HMM benchmark was workable, but less balanced than the final Jump Model. Its state shares were about `47.1% / 21.7% / 31.3%`, with one noticeably shorter-lived state.
+The Gaussian HMM benchmark was informative, but it was not selected as the main model. The main issue is not only balance; more importantly, HMM does not impose an explicit switching penalty in the way the Jump Model does. In this project, that made regime assignments more prone to frequent switching and weaker persistence, which is less suitable for identifying medium-horizon macro environments. The Jump Model produced a more stable and economically interpretable segmentation on the same reduced feature space.
 
 ### Why Jump Model
 
