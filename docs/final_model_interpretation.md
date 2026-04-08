@@ -8,7 +8,7 @@ The final preferred specification is a 4-state Jump Model built on:
 - `term_spread_10y_1y`
 - `credit_spread`
 
-with jump penalty `p = 1.1`.
+with jump penalty `p = 1.0`.
 
 ## Regime definitions
 

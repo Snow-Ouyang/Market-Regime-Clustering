@@ -4,7 +4,7 @@ This folder contains the curated outputs for the **preferred final specification
 
 - 4-state Jump Model
 - variables: `growth_pc1`, `inflation_pc1`, `gs10`, `term_spread_10y_1y`, `credit_spread`
-- penalty: `p = 1.1`
+- penalty: `p = 1.0`
 
 Key files:
 

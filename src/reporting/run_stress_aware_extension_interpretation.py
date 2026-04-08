@@ -31,7 +31,7 @@ FEATURES = [
     "credit_spread",
 ]
 ASSET_NAMES = ["spx", "oil", "bond", "gold"]
-PENALTY = 1.1
+PENALTY = 1.0
 N_STATES = 4
 SEEDS = list(range(10))
 

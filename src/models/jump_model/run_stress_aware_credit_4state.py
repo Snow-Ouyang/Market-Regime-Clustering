@@ -32,7 +32,7 @@ FEATURES = [
 ALL_PROFILE_VARS = FEATURES + ["realized_vol", "spx_ret", "bond_ret"]
 N_STATES = 4
 SEEDS = list(range(10))
-PENALTY = 1.1
+PENALTY = 1.0
 
 
 def ensure_dirs() -> None:
