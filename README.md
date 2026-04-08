@@ -7,7 +7,7 @@ Can a compact macro-financial feature space identify interpretable market regime
 **Preferred model**
 
 - **Model:** 4-state Jump Model
-- **Penalty:** `p = 1.5`
+- **Penalty:** `p = 1.1`
 - **Variables:** `growth_pc1`, `inflation_pc1`, `gs10`, `term_spread_10y_1y`, `credit_spread`
 - **Why preferred:** it offers the best tradeoff between persistence and historical narrative alignment, and isolates a distinct stress regime that the compact baseline mixes into broader macro environments
 
@@ -19,7 +19,7 @@ The benchmark baseline remains useful for reference, but the stress-aware final 
 
 ## Why This Is the Preferred Model
 
-The original 3-state compact baseline remains a useful benchmark because it is stable, parsimonious, and interpretable. But it is no longer the preferred model because its state space is too coarse to isolate crisis periods as a dedicated regime: major episodes such as 2008 and 2020 are absorbed into broader macro environments rather than separated into a stress state. The stress-aware extension adds `credit_spread` and allows a fourth state, which more naturally isolates a distinct stress-like regime and improves narrative alignment around the 1973-1975 oil-shock recession, the Volcker disinflation double-dip, the 1990-1991 credit-tightening recession, the Global Financial Crisis, and the COVID shock. The preferred penalty, `p = 1.5`, is not the most conservative setting; it is the setting that best balances persistence, crisis separation, and economic meaning.
+The original 3-state compact baseline remains a useful benchmark because it is stable, parsimonious, and interpretable. But it is no longer the preferred model because its state space is too coarse to isolate crisis periods as a dedicated regime: major episodes such as 2008 and 2020 are absorbed into broader macro environments rather than separated into a stress state. The stress-aware extension adds `credit_spread` and allows a fourth state, which more naturally isolates a distinct stress-like regime and improves narrative alignment around the 1973-1975 oil-shock recession, the Volcker disinflation double-dip, the 1990-1991 credit-tightening recession, the Global Financial Crisis, and the COVID shock. The preferred penalty, `p = 1.1`, is not the most conservative setting; it is the setting that best balances persistence, crisis separation, and economic meaning.
 
 ## Four Regime Definitions
 

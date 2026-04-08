@@ -20,9 +20,9 @@ Moving from 3 states to 4 states is justified only in the stress-aware extension
 
 That additional state is what turns the model from a compact macro partition into a more interpretable macro-financial regime map.
 
-## Why penalty = 1.5
+## Why penalty = 1.1
 
-The stress-aware extension was evaluated over a local penalty grid centered on moderate persistence. The preferred penalty, `p = 1.5`, was selected because it offered the most convincing middle ground between two failure modes:
+The stress-aware extension was evaluated over a local penalty grid centered on moderate persistence. The preferred penalty, `p = 1.1`, was selected because it offered the most convincing middle ground between two failure modes:
 
 - lower penalties produced more switchy and less coherent stress-state assignments
 - higher penalties made the regime path too sticky and reduced narrative flexibility
@@ -31,7 +31,7 @@ The selected specification is therefore not the most stable possible model, but 
 
 ## Final positioning
 
-- **Preferred model:** 4-state stress-aware Jump Model with `credit_spread`, `p = 1.5`
+- **Preferred model:** 4-state stress-aware Jump Model with `credit_spread`, `p = 1.1`
 - **Reference benchmark:** 3-state compact Jump Model with `p = 0.6`
 
 The preferred model is the main interpretive result of the repository. The baseline remains in the project as a benchmark because it is cleaner, simpler, and useful for comparison.
