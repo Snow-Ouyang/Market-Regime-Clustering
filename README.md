@@ -19,8 +19,8 @@ The benchmark baseline remains useful for reference, but the stress-aware final 
 
 **Feature construction at a glance**
 
-- `growth_pc1`: first principal component of the monthly **Growth** block, built from `cfnai`, `gdp_amom`, `ipgr_amom`, and `ism`
-- `inflation_pc1`: first principal component of the monthly **Inflation** block, built from `cpi_amom`, `ppi_amom`, and `si_diff`
+- `growth_pc1`: first principal component of the monthly **Growth** block, built from `cfnai` (Chicago Fed National Activity Index), `gdp_amom` (annualized GDP growth), `ipgr_amom` (industrial production growth rate), and `ism` (ISM manufacturing diffusion index)
+- `inflation_pc1`: first principal component of the monthly **Inflation** block, built from `cpi_amom` (Consumer Price Index growth), `ppi_amom` (Producer Price Index growth), and `si_diff` (University of Michigan Consumer Sentiment first difference)
 - `gs10`: 10-year Treasury yield level
 - `term_spread_10y_1y`: `GS10 - GS1`
 - `credit_spread`: `BAA - AAA`
