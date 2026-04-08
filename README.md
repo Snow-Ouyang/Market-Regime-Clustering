@@ -105,9 +105,9 @@ The local penalty grid supports a stable neighborhood around `0.55-0.60`.
 
 ### Time Stability
 
-The model is reasonably stable when trimming the **start** of the sample, but more sensitive when trimming the **end**, especially in the post-2020 segment.
+The time-stability exercise shows an asymmetric result: trimming the **start** of the sample does not materially rewrite the three-state structure, but trimming the **end** of the sample, especially the post-pandemic years, changes the balance much more. This suggests that recent macro regime shifts matter more for model performance than the earliest years in the sample.
 
-![Time stability metrics](figures/jump_model_time_stability_summary_metrics.png)
+![Time stability paths](figures/jump_model_time_stability_paths.png)
 
 ### State-Count Stability
 
