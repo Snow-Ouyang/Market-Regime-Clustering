@@ -1,0 +1,6 @@
+panel,start,end,rows
+growth_pcs,1969-12-01,2025-12-01,673
+inflation_pcs,1972-08-01,2026-02-01,599
+rate_panel,1959-02-01,2026-02-01,805
+other_panel,1972-07-01,2025-09-01,639
+final_macro_inner_join,1972-08-01,2025-09-01,595

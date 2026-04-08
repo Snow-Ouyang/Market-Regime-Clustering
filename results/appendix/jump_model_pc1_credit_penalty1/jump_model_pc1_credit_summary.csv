@@ -1,0 +1,2 @@
+penalty,best_seed,objective_value,state_0_share,state_1_share,state_2_share,min_state_share,max_state_share,state_0_mean_duration,state_1_mean_duration,state_2_mean_duration,state_0_occurrences,state_1_occurrences,state_2_occurrences
+1.0,5,1013.5556925979735,0.48403361344537815,0.4184873949579832,0.09747899159663866,0.09747899159663866,0.48403361344537815,41.142857142857146,31.125,8.285714285714286,7,8,7

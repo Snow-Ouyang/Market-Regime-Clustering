@@ -1,0 +1,8 @@
+numpy>=2.1
+pandas>=2.2
+matplotlib>=3.10
+seaborn>=0.13
+scikit-learn>=1.5
+hmmlearn>=0.3.3
+jumpmodels>=0.1.1
+yfinance>=0.2.66

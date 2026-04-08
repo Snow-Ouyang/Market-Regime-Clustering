@@ -1,0 +1,2 @@
+n_states,best_seed,log_likelihood,AIC,BIC,converged,iterations,state_0_share,state_1_share,state_2_share,min_state_share,max_state_share,state_0_mean_duration,state_1_mean_duration,state_2_mean_duration,state_0_occurrences,state_1_occurrences,state_2_occurrences
+3,0,-2639.020431566257,5342.040863132514,5482.474828109974,True,38,0.47058823529411764,0.21680672268907564,0.3126050420168067,0.21680672268907564,0.47058823529411764,93.33333333333333,16.125,37.2,3,8,5
