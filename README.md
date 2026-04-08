@@ -1,193 +1,143 @@
-# Macro Regime Clustering with Jump Models and Asset Mapping
+# Macro Regime Clustering: Stress-Aware Jump Models and Cross-Asset Mapping
 
-This repository studies whether a compact monthly macro state space can produce stable, interpretable market regimes and economically meaningful asset behavior.
+Can a compact macro-financial feature space identify interpretable market regimes, and does a stress-aware extension improve historical crisis alignment? This repository answers that question with a monthly macro regime framework built from public U.S. macro and market data. The original **3-state baseline** remains useful because it is stable, parsimonious, and interpretable, but its state space is too coarse to isolate crisis-like episodes as a dedicated regime. The final preferred specification is therefore a **4-state Jump Model** that augments the compact baseline with **credit spread**, allowing the model to recover a distinct **Macro-Financial Stress** state while preserving medium-horizon persistence and interpretable state profiles.
 
-## Final Results Snapshot
+## Final Model Snapshot
 
-**Final model:** 3-state Jump Model, **penalty = 0.6**, built on four core variables:
-`growth_pc1`, `inflation_pc1`, `gs10`, and `term_spread_10y_1y`.
+**Preferred model**
 
-The selected baseline is the smallest specification that remained balanced, persistent, interpretable, and externally valid.
-The final segmentation is balanced and persistent, with regimes differentiated mainly by inflation, long-rate level, and curve shape.
+- **Model:** 4-state Jump Model
+- **Penalty:** `p = 1.5`
+- **Variables:** `growth_pc1`, `inflation_pc1`, `gs10`, `term_spread_10y_1y`, `credit_spread`
+- **Why preferred:** it offers the best tradeoff between persistence and historical narrative alignment, and isolates a distinct stress regime that the compact baseline mixes into broader macro environments
 
-![Final regime path](figures/final_regime_path.png)
+![Stress-aware regime path](figures/final_model/stress_aware_regime_path.png)
 
-This path should be read as a persistent macro classification rather than monthly noise, and the post-2020 sample is especially important for the third regime.
+The preferred model is not a recession classifier; it is a persistent macro-financial segmentation whose crisis-sensitive state aligns more closely with major stress episodes than the 3-state benchmark.
 
-### Final State Profiles
+The benchmark baseline remains useful for reference, but the stress-aware final model is preferred because it separates crisis-like macro-financial stress from broader macro environments.
 
-| Regime | growth_pc1 | inflation_pc1 | gs10 | term_spread_10y_1y |
-|---|---:|---:|---:|---:|
-| Moderate Growth / Flat Curve | 0.136 | -0.004 | 4.08 | 0.39 |
-| Low Inflation / Steep Curve | -0.243 | -0.411 | 4.09 | 2.33 |
-| High Inflation / High Rate | -0.019 | 0.424 | 9.79 | 0.64 |
+## Why This Is the Preferred Model
 
-![Final regime profile heatmap](figures/final_regime_profile_heatmap.png)
+The original 3-state compact baseline remains a useful benchmark because it is stable, parsimonious, and interpretable. But it is no longer the preferred model because its state space is too coarse to isolate crisis periods as a dedicated regime: major episodes such as 2008 and 2020 are absorbed into broader macro environments rather than separated into a stress state. The stress-aware extension adds `credit_spread` and allows a fourth state, which more naturally isolates a distinct stress-like regime and improves narrative alignment around the 1973-1975 oil-shock recession, the Volcker disinflation double-dip, the 1990-1991 credit-tightening recession, the Global Financial Crisis, and the COVID shock. The preferred penalty, `p = 1.5`, is not the most conservative setting; it is the setting that best balances persistence, crisis separation, and economic meaning.
 
-### Best-Performing Regime by Asset
+## Four Regime Definitions
 
-| Asset | Best regime | Annualized return |
-|---|---|---:|
-| S&P 500 | Moderate Growth / Flat Curve | 13.3% |
-| Oil | Moderate Growth / Flat Curve | 17.2% |
-| Bond | Low Inflation / Steep Curve | 10.8% |
-| Gold | Moderate Growth / Flat Curve | 7.5% |
-
-This is only a summary view; the full cross-regime asset table appears later in the README and in the results folder.
-
-## Project Overview
-
-The project asks whether macro regimes can be identified from a small, interpretable monthly feature space rather than from a large everything-in panel. It starts from grouped macro panels, compares HMM and Jump Model baselines, and then narrows the variable space through structured sensitivity analysis. The final result is a 3-state Jump Model that remains reasonably stable under nearby penalties, sample trimming, and adjacent state counts. The regimes also line up with meaningful differences in credit conditions, labor dynamics, and asset performance.
-
-## Final Regime Definitions
-
-| State | Regime name | Main profile |
+| State | Regime name | Interpretation |
 |---|---|---|
-| `state_0` | Moderate Growth / Flat Curve Regime | moderate growth, near-neutral inflation, mid-rate backdrop, flatter curve |
-| `state_1` | Low Inflation / Steep Curve Regime | weaker growth, lower inflation, moderate rates, steep curve |
-| `state_2` | High Inflation / High Rate Regime | elevated inflation, high long rates, flatter curve backdrop |
+| `state_0` | Late-Cycle / Inflationary Flat Curve | Moderate growth but flatter curve conditions, with somewhat firmer inflation pressure and tighter late-cycle macro conditions. |
+| `state_1` | Low-Rate / Steep Curve | Lower-rate, steeper-curve environment consistent with easier financial conditions and recovery-like term structure. |
+| `state_2` | High-Rate / Resilient Growth | Restrictive-rate environment with still-positive growth conditions rather than outright stress. |
+| `state_3` | Macro-Financial Stress | Weak growth, the widest credit spreads, the highest realized volatility, weak equities, and the strongest bond performance. |
 
-These labels are stored in [`results/core/regime_interpretation/regime_labels.csv`](results/core/regime_interpretation/regime_labels.csv), while the numeric state means are already shown in the snapshot above.
+The labels are stored in [results/final_model/regime_labels.csv](results/final_model/regime_labels.csv).
 
-## Data and Features
+## State Moments and Regime Characteristics
 
-The broader project first builds grouped monthly panels for Growth, Inflation, Rate, and Other variables. Growth and Inflation are compressed with PCA; rates and auxiliary variables are kept on transformed economic scales.
+The preferred model is summarized in [results/final_model/regime_characteristics_summary.csv](results/final_model/regime_characteristics_summary.csv). The table below shows the core macro-financial state means plus selected asset return summaries.
 
-The final model keeps only four variables:
+| Regime | growth | inflation | gs10 | term spread | credit spread | realized vol | S&P ann. ret. | Bond ann. ret. |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Late-Cycle / Inflationary Flat Curve | -0.07 | 0.23 | 5.73 | 0.09 | 0.84 | 0.0419 | 6.9% | 6.2% |
+| Low-Rate / Steep Curve | 0.27 | -0.10 | 3.55 | 2.10 | 0.96 | 0.0403 | 9.1% | 7.9% |
+| High-Rate / Resilient Growth | 0.52 | -0.16 | 9.97 | 1.21 | 1.39 | 0.0422 | 12.8% | 7.0% |
+| Macro-Financial Stress | -3.59 | -0.54 | 8.89 | 1.10 | 2.31 | 0.0820 | 5.5% | 19.3% |
+
+The key economic point is the fourth regime: **Macro-Financial Stress** is clearly differentiated by weak growth, the widest credit spreads, the highest volatility, weak equity outcomes, and the strongest bond behavior.
+
+![Preferred model profile heatmap](figures/final_model/final_model_profile_heatmap.png)
+
+## Historical Narrative Alignment
+
+The stress-aware extension is preferred because it maps more naturally to broad macro-financial stress episodes:
+
+- First Oil Crisis / 1973-1975 recession
+- Volcker disinflation / 1980-1982 double-dip recession
+- 1990-1991 recession / Gulf War / credit tightening
+- 2008-2009 Global Financial Crisis
+- 2020 COVID shock
+
+The main contribution is not just the addition of a fourth state, but the fact that the extra state has a clear economic interpretation as **Macro-Financial Stress** rather than as a noisy fragment. In practice, that means the preferred model better separates crisis-like macro-financial environments from ordinary late-cycle, low-rate, or high-rate expansion states. The model should still be read as capturing broad stress conditions, not as perfectly detecting every recession month or mechanically reproducing NBER turning points.
+
+## Asset Mapping
+
+The preferred regimes map cleanly into cross-asset behavior. The figure below keeps regime background shading and shows how equity, oil, bonds, and gold behave across the four-state classification.
+
+![Assets by preferred regime](figures/final_model/stress_aware_assets_by_regime.png)
+
+Full asset results are stored in [results/final_model/asset_performance_by_regime.csv](results/final_model/asset_performance_by_regime.csv). A compact summary is below.
+
+| Asset | Strongest regime | Annualized return | Weakest regime | Annualized return |
+|---|---|---:|---|---:|
+| S&P 500 | High-Rate / Resilient Growth | 12.8% | Macro-Financial Stress | 5.5% |
+| Oil | Late-Cycle / Inflationary Flat Curve | 19.0% | Macro-Financial Stress | -48.8% |
+| US Treasury bonds | Macro-Financial Stress | 19.3% | Late-Cycle / Inflationary Flat Curve | 6.2% |
+| Gold | Late-Cycle / Inflationary Flat Curve | 11.1% | High-Rate / Resilient Growth | -2.8% |
+
+This is descriptive asset mapping rather than a trading strategy, but it confirms that the final regimes correspond to distinct market environments rather than purely statistical partitions.
+
+## Baseline Benchmark Comparison
+
+The project still keeps the original **3-state compact Jump Model** as a **reference benchmark**. It uses:
 
 - `growth_pc1`
 - `inflation_pc1`
 - `gs10`
 - `term_spread_10y_1y`
+- penalty `p = 0.6`
 
-This reduction was deliberate. Variables such as `bog_amom`, `ur_diff`, `credit_spread`, `cp_amom`, `hs_amom`, and `realized_vol` were useful for validation, but they either worsened balance, introduced fragmented states, or pushed the model toward market-stress rather than macro-state classification.
+Why keep it:
 
-## Research Workflow
+- it is smaller and cleaner
+- it is stable under nearby penalties and sample trims
+- it remains a good benchmark for parsimony and interpretability
 
-1. Build grouped macro panels from public monthly and quarterly series.
-2. Compress the Growth and Inflation blocks with PCA.
-3. Build a unified monthly macro panel.
-4. Compare Gaussian HMM and Jump Model baselines.
-5. Select the final state space, state count, and jump penalty.
-6. Run penalty, time-trimming, and state-count stability checks.
-7. Validate regimes with variables not used in the final model.
-8. Map the final regimes to equity, oil, bond, and gold behavior.
+Why it is no longer preferred:
 
-## Why This Model?
+- it blends stress episodes into broader macro states
+- it does not isolate a distinct macro-financial stress regime
+- it is better as a comparison model than as the final interpretive specification
 
-### Why not the full panel
+In short, the baseline is better for parsimony, while the preferred stress-aware model is better for crisis identification and macro-financial narrative alignment.
 
-The broader macro panel was not healthier than the compact one. Adding more variables often produced one dominant state plus a small fragment, or states driven by auxiliary variables rather than by the macro core.
+Reference benchmark outputs are curated under [results/baseline_reference](results/baseline_reference) and [figures/baseline_reference](figures/baseline_reference).
 
-### Why not HMM
-
-The Gaussian HMM benchmark was informative, but it was not selected as the main model. The main issue is not only balance; more importantly, HMM does not impose an explicit switching penalty in the way the Jump Model does. In this project, that made regime assignments more prone to frequent switching and weaker persistence, which is less suitable for identifying medium-horizon macro environments. The Jump Model produced a more stable and economically interpretable segmentation on the same reduced feature space.
-
-### Why Jump Model
-
-The Jump Model explicitly penalizes switching, which is useful in monthly macro classification. It avoids the over-switching problem of unconstrained clustering while still allowing meaningful regime changes.
-
-### Why 3-state
-
-With variables and penalty fixed, `2-state` is too coarse and merges distinct environments, while `4-state` starts splitting out a smaller extra state. `3-state` is the cleanest compromise between interpretability and parsimony.
-
-### Why this penalty
-
-The local grid over `0.50, 0.55, 0.60, 0.65, 0.70` stayed broadly stable, but `0.50` was more switchy and `0.65-0.70` were stickier. `0.60` sits in the stable middle of the grid and preserves balanced state shares and durations.
-
-## Stability Analysis
-
-### Penalty Stability
-
-The local penalty grid supports a stable neighborhood around `0.55-0.60`.
-
-![Penalty diagnostics](figures/jump_model_penalty_grid_diagnostics.png)
-
-### Time Stability
-
-The time-stability exercise shows an asymmetric result: trimming the **start** of the sample does not materially rewrite the three-state structure, but trimming the **end** of the sample, especially the post-pandemic years, changes the balance much more. This suggests that recent macro regime shifts matter more for model performance than the earliest years in the sample.
-
-![Time stability paths](figures/jump_model_time_stability_paths.png)
-
-### Variable Stability
-
-The baseline is also more stable than nearby expanded specifications. Adding `credit_spread` to the final four-variable state space makes the classification visibly less balanced and introduces a smaller, less stable extra state, which is why credit is kept as a validation variable rather than a core state input.
-
-![Variable stability paths](figures/jump_model_variable_stability_paths.png)
-
-### State-Count Stability
-
-Holding the feature space and penalty fixed confirms that `3-state` remains the most balanced option between a too-coarse `2-state` solution and a more split `4-state` solution.
-
-![State-count stability](figures/jump_model_state_count_paths.png)
-
-## External Validation
-
-The final model is not fit on `credit_spread`, `ur_diff`, `bog_amom`, `cp_amom`, `hs_amom`, or `realized_vol`, but these variables still separate meaningfully across regimes.
-
-Most informative validators:
-
-- `credit_spread` is highest in the High Inflation / High Rate regime and lowest in Moderate Growth / Flat Curve.
-- `ur_diff` is weakest in the Low Inflation / Steep Curve regime.
-- `bog_amom` is highest on average in the Low Inflation / Steep Curve regime, though noisy.
-- `realized_vol` differs across regimes, but less sharply than credit spreads.
-
-![External validation](figures/regime_external_validation_heatmap.png)
-
-These variables were excluded from the final state model, but they still sort meaningfully across regimes, which strengthens the economic interpretation of the final classification.
-
-The underlying table is [`results/core/regime_interpretation/regime_external_validation_table.csv`](results/core/regime_interpretation/regime_external_validation_table.csv).
-
-## Asset Behavior Across Regimes
-
-The final regimes map meaningfully to monthly asset behavior:
-
-- **Equities** do best in Moderate Growth / Flat Curve.
-- **Bonds** do best in Low Inflation / Steep Curve.
-- **Oil** is weakest in Low Inflation / Steep Curve.
-- **Gold** performs well in both Moderate Growth / Flat Curve and Low Inflation / Steep Curve.
-
-This matters because the regimes are not just statistical partitions; they correspond to distinct cross-asset market environments.
-
-![Asset overview](figures/asset_price_overview.png)
-
-The full asset table is [`results/core/regime_interpretation/asset_performance_by_regime.csv`](results/core/regime_interpretation/asset_performance_by_regime.csv).
+![Baseline regime path](figures/baseline_reference/baseline_regime_path.png)
 
 ## Key Findings
 
-- A compact 4-variable macro state space outperforms broader panels for regime detection in this project.
-- A 3-state Jump Model provides the most balanced and interpretable segmentation.
-- The final regimes are mainly differentiated by inflation, long-rate level, and curve shape.
-- Nearby penalty values preserve the same broad regime structure, with `0.60` sitting in the most balanced part of the grid.
-- The model is directionally stable, but sample-end trimming shows that the post-2020 period remains important to the final classification.
-- Equity, bond, oil, and gold behave meaningfully differently across the final regimes.
-
-## Limits
-
-- The final states are better interpreted as **macro-financial environments** than as an NBER recession classifier.
-- The classification is more sensitive at the sample end than at the sample start.
-- Results depend on monthly feature construction and on the reduced four-variable state space.
-- Asset mapping is descriptive regime conditioning, not a complete trading strategy.
-- The bond proxy (`VUSTX`) is now stored locally as a monthly CSV, but it is still an external market series rather than a macro panel input.
+- A compact macro core remains essential, but the preferred final model is **stress-aware**, not purely compact.
+- Adding `credit_spread` and moving to **4 states** improves historical narrative alignment by isolating a distinct **Macro-Financial Stress** regime.
+- The preferred model separates ordinary late-cycle, low-rate, and high-rate expansion environments more cleanly from broad crisis episodes.
+- The stress regime is economically coherent: it combines weak growth, wide credit spreads, high volatility, weak equities, and strong bond performance.
+- The old 3-state model is still valuable as a stable benchmark, but it is no longer the best final interpretive model.
+- Cross-asset behavior differs meaningfully across regimes, supporting the economic relevance of the final classification.
 
 ## Repository Structure
 
 ```text
 .
-+-- README.md
-+-- requirements.txt
-+-- data_raw/
-+-- data_processed/
-+-- docs/
-+-- figures/
-+-- results/
-|   +-- core/
-|   \-- appendix/
-\-- src/
-    +-- data/
-    +-- models/
-    +-- reporting/
-    \-- archive/
+├── README.md
+├── requirements.txt
+├── data_raw/
+├── data_processed/
+├── figures/
+│   ├── final_model/
+│   └── baseline_reference/
+├── results/
+│   ├── final_model/
+│   ├── baseline_reference/
+│   ├── core/          # original baseline workflow outputs retained for reproducibility
+│   ├── extensions/    # original extension workflow outputs retained for reproducibility
+│   └── appendix/
+├── docs/
+├── src/
+│   ├── data/
+│   ├── models/
+│   ├── reporting/
+│   ├── archive/
+│   └── run_final_model.py
+└── LICENSE
 ```
 
 ## Reproducibility
@@ -198,26 +148,43 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-If you only want the main outputs, start with `figures/` and `results/core/`; if you want to rebuild the full pipeline, follow the run order below.
-
-Suggested run order:
+### Reproduce the preferred final model outputs
 
 ```bash
-python src/data/build_all_panels.py
-python src/data/build_final_macro_panel.py
+python src/run_final_model.py
+```
+
+This runs the stress-aware 4-state interpretation script and assembles the curated GitHub-facing outputs under:
+
+- [results/final_model](results/final_model)
+- [figures/final_model](figures/final_model)
+
+### Reproduce the baseline benchmark outputs
+
+```bash
 python src/models/jump_model/run_panel_g_pc2_no_bog_penalty_grid.py
 python src/reporting/summarize_jump_model_penalty_profiles.py
 python src/models/jump_model/run_jump_model_time_stability.py
 python src/models/jump_model/run_jump_model_state_count_stability.py
 python src/reporting/run_regime_interpretation.py
+python src/reporting/build_final_outputs.py
 ```
 
-Included in the repository:
+The last command refreshes the curated `baseline_reference` and `final_model` folders from the underlying workflow outputs.
 
-- raw macro and asset CSVs used in the study
-- a local monthly `VUSTX` bond series for asset mapping
-- processed panel files
-- final core result tables
-- README-ready figures
+## Documentation
 
-See [`docs/results_interpretation.md`](docs/results_interpretation.md) for the fuller research narrative and interpretation.
+Supporting notes are in:
+
+- [docs/model_selection.md](docs/model_selection.md)
+- [docs/final_model_interpretation.md](docs/final_model_interpretation.md)
+- [docs/baseline_vs_extension.md](docs/baseline_vs_extension.md)
+- [docs/results_interpretation.md](docs/results_interpretation.md)
+
+## Data Availability and Limitations
+
+- Raw macro series and asset CSVs used in the project are included under [data_raw](data_raw).
+- Processed panel files used for modeling are included under [data_processed](data_processed).
+- The bond proxy (`VUSTX`) is stored locally as a monthly CSV for reproducibility.
+- The preferred model captures broad macro-financial stress, but it does **not** perfectly identify every recession month.
+- The results are monthly, descriptive, and conditional; they should not be read as a direct trading strategy or a recession prediction engine.

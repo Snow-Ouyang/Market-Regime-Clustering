@@ -1,0 +1,4 @@
+n_states,best_seed,objective_value,min_state_share,max_state_share,state_0_share,state_0_mean_duration,state_0_occurrences,state_1_share,state_1_mean_duration,state_1_occurrences,smallest_state_mean_duration,largest_state_mean_duration,avg_state_duration,num_states_below_5pct_share,num_states_below_3_month_mean_duration,state_2_share,state_2_mean_duration,state_2_occurrences,state_3_share,state_3_mean_duration,state_3_occurrences
+2,1,950.8087403559487,0.4369747899159664,0.5630252100840336,0.5630252100840336,67.0,5,0.4369747899159664,65.0,4,65.0,67.0,66.0,0,0,,,,,,
+3,5,824.0093877022689,0.30756302521008405,0.3764705882352941,0.3764705882352941,44.8,5,0.31596638655462184,37.6,5,37.6,61.0,47.800000000000004,0,0,0.30756302521008405,61.0,3.0,,,
+4,2,721.1751222753606,0.10084033613445378,0.334453781512605,0.334453781512605,39.8,5,0.292436974789916,43.5,4,12.0,43.5,28.8875,0,0,0.2722689075630252,20.25,8.0,0.10084033613445378,12.0,5.0

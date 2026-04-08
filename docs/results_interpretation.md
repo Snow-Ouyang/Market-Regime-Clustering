@@ -1,143 +1,101 @@
 # Results Interpretation
 
-## Why the final model holds up
+This document provides a longer narrative summary of the repository after the final model selection was completed.
 
-The final regime detector is a 3-state Jump Model built on four variables:
+## Final positioning
 
-- `growth_pc1`
-- `inflation_pc1`
-- `gs10`
-- `term_spread_10y_1y`
+The repository keeps two models:
 
-The project started from a much broader macro panel, but repeated sensitivity checks showed that a larger feature space did not improve the state structure. Variables such as `bog_amom`, `ur_diff`, `cp_amom`, `hs_amom`, and `realized_vol` either introduced extra noise or pushed the model toward collapsed or market-driven states. The four-variable specification was the smallest space that still retained a coherent macro interpretation.
+- **Preferred model:** 4-state stress-aware Jump Model with `credit_spread`, penalty `p = 1.5`
+- **Reference benchmark:** 3-state compact Jump Model, penalty `p = 0.6`
 
-Within this reduced feature space, a 3-state Jump Model with penalty `0.6` gave the best balance between:
+The benchmark remains valuable for parsimony and stability. The preferred model is the one used for final interpretation because it introduces a distinct **Macro-Financial Stress** state and aligns better with major historical episodes.
 
-- state shares that are not overly concentrated
-- durations that are persistent but not excessively sticky
-- state profiles that remain economically interpretable
+## Why the preferred model holds up
 
-At penalty `0.6`, the state shares are roughly `37.6% / 31.6% / 30.8%`, with mean durations of about `44.8 / 37.6 / 61.0` months. That is materially healthier than the earlier specifications that produced one dominant state plus a tiny short-lived fragment.
+The preferred model expands the compact macro core just enough to separate stress from ordinary macro environments. The key addition is `credit_spread`, which makes the state space sensitive to funding and credit conditions without completely collapsing into a volatility-only classifier.
 
-## Why some variables were excluded
+That produces four economically meaningful regimes:
 
-The final feature space is deliberately narrower than the full macro panel.
+1. **Late-Cycle / Inflationary Flat Curve**
+2. **Low-Rate / Steep Curve**
+3. **High-Rate / Resilient Growth**
+4. **Macro-Financial Stress**
 
-- `growth_pc2` and `inflation_pc2` were useful during the earlier exploratory phase, but once the project moved to a cleaner public baseline, the first PCs carried the main cross-sectional signal and the four-variable version remained comparably stable.
-- `bog_amom` improved some intermediate specifications but also made the final narrative less robust. Once the penalty grid was rerun on the four core variables, the simpler specification held up well enough to become the main version.
-- `ur_diff` was particularly regime-distorting in the Jump Model setting. Adding labor changes often pushed the solution back toward a nearly degenerate state.
-- `credit_spread` was more acceptable than `ur_diff`, but still degraded the clean three-way split relative to the core baseline.
-- `cp_amom`, `hs_amom`, and `realized_vol` are useful as validation variables, but not as primary state inputs. In particular, `realized_vol` risked turning the model into a market-stress detector rather than a macro regime classifier.
+The fourth regime is the main reason the extension became preferred. It is smaller than the other three states, but it is not a trivial noise fragment. It is characterized by weak growth, wide credit spreads, high realized volatility, weak equity behavior, and strong bond performance.
 
-## Economic meaning of the three regimes
+## Why some variables were excluded from the preferred state space
 
-Using the state profiles from the selected penalty:
+The project tested many variables, but not all of them improved the regime structure.
 
-### 1. Moderate Growth / Flat Curve Regime
+- `bog_amom` helped some intermediate specifications, but did not improve the final tradeoff as much as credit spread did.
+- `ur_diff` was more regime-distorting and often pushed the clustering toward less balanced solutions.
+- `cp_amom`, `hs_amom`, and `realized_vol` were useful for validation, but were not attractive as core state inputs.
 
-- `growth_pc1`: modestly positive
-- `inflation_pc1`: near neutral
-- `gs10`: moderate
-- `term_spread_10y_1y`: relatively flat
+The final extension therefore uses a deliberately narrow macro-financial feature space rather than a large all-in panel.
 
-This is the most equity-friendly environment in the sample. It looks like a steady expansion regime rather than a high-pressure inflationary phase.
+## Baseline strengths vs extension strengths
 
-### 2. Low Inflation / Steep Curve Regime
+The **baseline** is still strong because it is:
 
-- `growth_pc1`: weakest among the three states
-- `inflation_pc1`: clearly lowest
-- `gs10`: moderate
-- `term_spread_10y_1y`: steepest curve
+- parsimonious
+- balanced
+- relatively stable under nearby penalties and sample trims
+- easy to interpret
 
-This regime is not simply “recession.” It mixes disinflationary and policy-easing environments with steeper curves and weaker macro momentum. It performs well for bonds and reasonably well for gold, but is poor for oil.
+The **extension** is preferred because it is:
 
-### 3. High Inflation / High Rate Regime
+- better aligned with major stress episodes
+- better at separating crisis-like environments from ordinary macro states
+- richer for historical narrative
+- more informative for cross-asset interpretation
 
-- `growth_pc1`: close to neutral
-- `inflation_pc1`: highest
-- `gs10`: highest by far
-- `term_spread_10y_1y`: flatter than the steep-curve regime
+The choice between the two depends on the research objective. If the priority is stability and minimalism, the baseline is attractive. If the priority is historical macro-financial interpretation, the extension is better.
 
-This is the clearest inflation / rate regime in the final model. It maps naturally to tightening or inflation-scare environments, though it should not be interpreted as a literal “overheating” label in every month.
+## Historical interpretation
 
-## Stability analysis
+The preferred model lines up more naturally with:
 
-### Penalty stability
+- the First Oil Crisis / 1973-1975 recession
+- the Volcker disinflation / 1980-1982 double-dip recession
+- the 1990-1991 recession / Gulf War / credit tightening
+- the Global Financial Crisis
+- the COVID shock
 
-The local penalty grid over `0.50, 0.55, 0.60, 0.65, 0.70` showed that all candidates were admissible, but:
-
-- `0.50` was somewhat more switchy
-- `0.65-0.70` were noticeably stickier
-- `0.55-0.60` gave the cleanest balance
-
-Penalty `0.60` was retained as the baseline because it sat inside the stable middle of the grid and preserved a balanced three-state structure.
-
-### Time stability
-
-Trimmed-sample checks showed partial, not perfect, stability.
-
-- Trimming the start of the sample (`3y`, `5y`, `10y`) preserved the three-state structure well.
-- Trimming the end of the sample made the third state smaller and reduced balance.
-- This suggests the model is directionally stable, but it is still somewhat sensitive to the post-2020 endpoint.
-
-### State-count stability
-
-Holding variables and penalty fixed:
-
-- `2-state` is too coarse and mostly merges two of the final three environments.
-- `4-state` starts splitting off a smaller extra state rather than revealing a clearly new macro regime.
-- `3-state` remains the most natural tradeoff between interpretability and parsimony.
-
-## External validation
-
-The final model was not fit on `credit_spread`, `ur_diff`, `bog_amom`, `cp_amom`, `hs_amom`, or `realized_vol`, but these variables still help assess economic meaning.
-
-Most informative validators:
-
-- `credit_spread`: highest in the high-inflation / high-rate regime and lowest in the moderate-growth regime
-- `ur_diff`: relatively weaker in the low-inflation / steep-curve regime
-- `bog_amom`: highest on average in the low-inflation / steep-curve regime, although very noisy
-- `realized_vol`: differs across regimes, but less sharply than `credit_spread`
-
-This pattern supports the interpretation that the final states capture broad macro-financial environments rather than arbitrary clustering artifacts.
+This does **not** mean that the model perfectly tracks recessions month by month. The more accurate reading is that it captures broad macro-financial stress regimes and distinguishes them from ordinary late-cycle, low-rate, or high-rate expansionary environments.
 
 ## Asset mapping
 
-The four-asset mapping uses:
+The preferred model is also more informative at the asset level:
 
-- S&P 500
-- Oil
-- Gold
-- Long-duration bond proxy (`VUSTX`)
+- equities do best in the **High-Rate / Resilient Growth** regime
+- bonds do best in the **Macro-Financial Stress** regime
+- oil is strongest in the **Late-Cycle / Inflationary Flat Curve** regime and weakest in stress
+- gold is strongest in the late-cycle inflationary regime and weaker in the high-rate resilient-growth regime
 
-Key regime-level results:
-
-- **Equities** do best in the Moderate Growth / Flat Curve regime.
-- **Bonds** do best in the Low Inflation / Steep Curve regime.
-- **Oil** is strongest in the Moderate Growth / Flat Curve regime and weakest in the Low Inflation / Steep Curve regime.
-- **Gold** performs best in the Moderate Growth / Flat Curve and Low Inflation / Steep Curve regimes, and less strongly in the High Inflation / High Rate regime.
-
-These outcomes reinforce the interpretation that the final states are more like macro-financial policy environments than textbook business-cycle bins.
+These results are descriptive. They should be read as conditional asset behavior under different macro-financial environments, not as a fully specified trading strategy.
 
 ## What is strongest about the project
 
-The strongest contribution of the current project is not a new clustering algorithm. It is the disciplined narrowing of the variable space until the regime structure became:
+The strongest contribution is not a new algorithm. It is the sequence of disciplined design choices that moved the project from:
 
-- balanced
-- interpretable
-- reasonably stable
-- externally valid
-- asset-relevant
+- a broad macro panel
+- to a compact stable baseline
+- to a final stress-aware extension that is still interpretable and reproducible
 
-In other words, the main result is a **workable macro regime definition**, not just a fitted classifier.
+In short, the repository now offers both:
+
+- a **clean benchmark regime model**
+- and a **preferred stress-aware final model**
+
+That combination makes the project stronger than a one-model story.
 
 ## Next extensions
 
 Natural next steps include:
 
-- event-by-event regime chronology
-- out-of-sample regime monitoring
-- asset allocation overlays by regime
-- transition-risk analysis around regime changes
-- expanding the validation set without feeding all variables back into the state model
-
+- explicit episode-level scoring of regime alignment
+- out-of-sample monitoring or rolling updates
+- richer asset overlays
+- transition-risk analysis around state changes
+- comparing the preferred model with other persistence-aware state models

@@ -1,0 +1,4 @@
+state,regime_name,short_description,narrative_basis
+state_0,Moderate Growth / Flat Curve Regime,"Moderate growth, near-neutral inflation, mid-rate environment with a flatter curve.","growth_pc1=0.14, inflation_pc1=-0.00, gs10=4.08, spread=0.39"
+state_1,Low Inflation / Steep Curve Regime,"Weaker growth, low inflation, moderate rates and a distinctly steeper curve.","growth_pc1=-0.24, inflation_pc1=-0.41, gs10=4.09, spread=2.33"
+state_2,High Inflation / High Rate Regime,Elevated inflation with high long rates and a flatter curve backdrop.,"growth_pc1=-0.02, inflation_pc1=0.42, gs10=9.79, spread=0.64"
